@@ -1,6 +1,11 @@
 package trie
 
-import "testing"
+import (
+	"strings"
+	"testing"
+
+	"github.com/satori/go.uuid"
+)
 
 func TestInsert(t *testing.T) {
 	tree := NewTrie(HexadecimalCharSet)
@@ -31,5 +36,31 @@ func TestInsert(t *testing.T) {
 		} else if set[bk] {
 			t.Errorf("key %s shouldn't found map", bk)
 		}
+	}
+
+	for _, k := range keys {
+		if !tree.Delete(k) {
+			t.Errorf("unexpected error deleting key: %s", k)
+		}
+
+		if tree.Find(k) {
+			t.Errorf("key %s shouldn't found after deleting", k)
+		}
+	}
+}
+
+func BenchmarkUUIDMap(b *testing.B) {
+	set := map[string]bool{}
+
+	for n := 0; n < b.N; n++ {
+		set[strings.Replace(uuid.NewV4().String(), "-", "", -1)] = true
+	}
+}
+
+func BenchmarkUUIDTrie(b *testing.B) {
+	tree := NewTrie(HexadecimalCharSet)
+
+	for n := 0; n < b.N; n++ {
+		tree.Add(strings.Replace(uuid.NewV4().String(), "-", "", -1))
 	}
 }

@@ -46,7 +46,7 @@ func (t *Trie) Add(str string) bool {
 	for ; l > 0; l = len(str) {
 		pos := t.cs.Position(str[0])
 		if pos < 0 || pos > t.cs.Size() {
-			panic(pos)
+			// panic(pos)
 			return false
 		}
 
@@ -83,6 +83,33 @@ func (t *Trie) Find(str string) bool {
 		}
 		if l == 1 {
 			return t.tree[pos].endKey
+		}
+
+		str = str[1:]
+		t = t.tree[pos]
+	}
+
+	return false
+}
+func (t *Trie) Delete(str string) bool {
+	l := len(str)
+	if l == 0 {
+		return false
+	}
+
+	for ; l > 0; l = len(str) {
+		pos := t.cs.Position(str[0])
+		if pos < 0 || pos > len(t.tree) {
+			// panic("incorrect position")
+			return false
+		}
+
+		if t.tree[pos] == nil {
+			return false
+		}
+		if l == 1 {
+			t.tree[pos].endKey = false
+			return true
 		}
 
 		str = str[1:]
