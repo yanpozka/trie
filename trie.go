@@ -28,7 +28,24 @@ func (h *hexCharSet) Position(r byte) int {
 	return -1
 }
 
-var HexadecimalCharSet CharSet = &hexCharSet{}
+type decimalCharSet struct{}
+
+func (*decimalCharSet) Size() int {
+	return 10
+}
+
+func (*decimalCharSet) Position(r byte) int {
+	if r >= '0' && r <= '9' { // is a number
+		return int(r - '0')
+	}
+
+	return -1
+}
+
+var (
+	HexadecimalCharSet = &hexCharSet{}
+	DecimalCharSet     = &decimalCharSet{}
+)
 
 func NewTrie(cs CharSet) *Trie {
 	return &Trie{

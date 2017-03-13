@@ -7,13 +7,25 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func TestInsert(t *testing.T) {
+func TestInsertWithHexadecimalCharSet(t *testing.T) {
 	tree := NewTrie(HexadecimalCharSet)
-
-	set := map[string]bool{}
 
 	keys := []string{"abcd12365", "1234567890", "dfe507a000", "abcdef", "554654a654654b654654",
 		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"}
+
+	testInsert(tree, t, keys)
+}
+
+func TestInsertWithDecimalCharSet(t *testing.T) {
+	tree := NewTrie(DecimalCharSet)
+	keys := []string{"912365", "1234567890", "507000", "46546546546546", "554654654654654654",
+		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "8", "7", "6", "5", "4", "3", "2"}
+
+	testInsert(tree, t, keys)
+}
+
+func testInsert(tree *Trie, t *testing.T, keys []string) {
+	set := map[string]bool{}
 
 	for _, k := range keys {
 		if !tree.Add(k) {
@@ -32,9 +44,9 @@ func TestInsert(t *testing.T) {
 
 	for _, bk := range []string{"a1b2b3c4d5f5e", "123", "ffffff", "aaa", "bcbe0123"} {
 		if tree.Find(bk) {
-			t.Errorf("key %s shouldn't found", bk)
+			t.Errorf("key %s shouldn't be found", bk)
 		} else if set[bk] {
-			t.Errorf("key %s shouldn't found map", bk)
+			t.Errorf("key %s shouldn't found in map", bk)
 		}
 	}
 
