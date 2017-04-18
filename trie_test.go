@@ -10,7 +10,7 @@ import (
 func TestInsertWithHexadecimalCharSet(t *testing.T) {
 	tree := NewTrie(HexadecimalCharSet)
 
-	keys := []string{"abcd12365", "1234567890", "dfe507a000", "abcdef", "554654a654654b654654",
+	keys := []string{"abcdf12365", "1234567890", "dfe507a000", "abcdef", "554654a654654b654654",
 		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"}
 
 	testInsert(tree, t, keys)
@@ -20,6 +20,14 @@ func TestInsertWithDecimalCharSet(t *testing.T) {
 	tree := NewTrie(DecimalCharSet)
 	keys := []string{"912365", "1234567890", "507000", "46546546546546", "554654654654654654",
 		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "8", "7", "6", "5", "4", "3", "2"}
+
+	testInsert(tree, t, keys)
+}
+
+func TestInsertWithEnglishAlfaCharSet(t *testing.T) {
+	tree := NewTrie(EnglishAlfaCharSet)
+	keys := []string{"abcdef", "zyxvwutrsqpo", "jafjgajg", "omdkdshfiuekd", "pqladkjvndjkksfkjd", "ABCEFDFSAGA", "oEiIkjFdl",
+		"a", "B", "c", "D", "e", "F", "g", "H", "i", "J", "k", "L", "m", "N", "o", "P", "q", "R", "s", "T", "u", "V", "w", "x", "y", "z"}
 
 	testInsert(tree, t, keys)
 }

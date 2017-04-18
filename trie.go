@@ -22,7 +22,7 @@ func (h *hexCharSet) Position(r byte) int {
 		return int(r - '0')
 	}
 	if r >= 'a' && r <= 'f' { // is a letter (a-f)
-		return int(r - 'a')
+		return int(r-'a') + 10
 	}
 
 	return -1
@@ -42,9 +42,27 @@ func (*decimalCharSet) Position(r byte) int {
 	return -1
 }
 
+type alfaCharSet struct{}
+
+func (*alfaCharSet) Size() int {
+	return 26
+}
+
+func (*alfaCharSet) Position(r byte) int {
+	if r >= 'a' && r <= 'z' { // is lower case
+		return int(r - 'a')
+	}
+	if r >= 'A' && r <= 'Z' { // is upper case
+		return int(r - 'A')
+	}
+
+	return -1
+}
+
 var (
 	HexadecimalCharSet = &hexCharSet{}
 	DecimalCharSet     = &decimalCharSet{}
+	EnglishAlfaCharSet = &alfaCharSet{}
 )
 
 func NewTrie(cs CharSet) *Trie {
